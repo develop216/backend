@@ -12,5 +12,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>{
 
 	public Utilisateur getUtilisateurById(int id);
 	//public Utilisateur getUtilisateurByEmail(String email);
-	public Optional<Utilisateur> getUtilisateurByEmail(String email);
+//	public Optional<Utilisateur> getUtilisateurByEmail(String email);
+	public Utilisateur getUtilisateurByEmail(String email);
+	//public Utilisateur findByUsername(String username);
 }

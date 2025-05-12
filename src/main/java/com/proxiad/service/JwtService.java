@@ -2,7 +2,6 @@ package com.proxiad.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
-	@Value("${security.jwt.secret-key}")
+    @Value("${security.jwt.secret-key}")
     private String secretKey;
 
     @Value("${security.jwt.expiration-time}")
@@ -49,17 +48,16 @@ public class JwtService {
         if (email != null && !isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid email format");
         }
-        
     }
-    
+
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
     }
-    
+
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-    	validateClaims(extraClaims);
-    	return buildToken(extraClaims, userDetails, jwtExpiration);
+        validateClaims(extraClaims);
+        return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
     public long getExpirationTime() {
@@ -71,13 +69,12 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
+        return Jwts.builder()
+                .addClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .signWith(getSignInKey())
                 .compact();
     }
 
@@ -95,8 +92,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
@@ -107,21 +103,20 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-    
+
     public String getSecretKey() {
-		return secretKey;
-	}
+        return secretKey;
+    }
 
-	public void setSecretKey(String secretKey) {
-		this.secretKey = secretKey;
-	}
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
 
-	public long getJwtExpiration() {
-		return jwtExpiration;
-	}
+    public long getJwtExpiration() {
+        return jwtExpiration;
+    }
 
-	public void setJwtExpiration(long jwtExpiration) {
-		this.jwtExpiration = jwtExpiration;
-	}
-    
+    public void setJwtExpiration(long jwtExpiration) {
+        this.jwtExpiration = jwtExpiration;
+    }
 }

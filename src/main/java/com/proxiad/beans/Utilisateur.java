@@ -1,11 +1,14 @@
 package com.proxiad.beans;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "utilisateur")
@@ -18,7 +21,7 @@ public class Utilisateur implements UserDetails {
     private String prenom;
     private String nom;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -28,6 +31,15 @@ public class Utilisateur implements UserDetails {
     
     @Column(name = "date_creation")
     private LocalDateTime dateCreation = LocalDateTime.now();
+    
+    
+    public Utilisateur(int id, String email, String passwordHash, List<String> role) {
+    	this.prenom= "test";
+    	this.nom="test";
+    	this.email = email;
+    	this.passwordHash = passwordHash;
+    	this.role = role.get(0);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -39,11 +51,7 @@ public class Utilisateur implements UserDetails {
         return passwordHash;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
+ 
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -93,7 +101,7 @@ public class Utilisateur implements UserDetails {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setemail(String email) {
         this.email = email;
     }
 
@@ -104,6 +112,8 @@ public class Utilisateur implements UserDetails {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+    
+
 
     public LocalDateTime getDateCreation() {
         return dateCreation;
@@ -113,5 +123,19 @@ public class Utilisateur implements UserDetails {
         this.dateCreation = dateCreation;
     }
 
+    public String getRole() {
+    	return role;
+    }
+    
+    public void setRole(String role) {
+    	this.role = role;
+    }
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
 
 }

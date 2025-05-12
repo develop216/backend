@@ -132,7 +132,12 @@
     </dependency>
 
     <!-- Si vous utilisez un conteneur comme Tomcat ou Jetty, vous pouvez également les ajouter ici -->
-    
+
+    <dependency>
+    	<groupId>com.cwa</groupId>
+    	<artifactId>crud-springboot</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
 	</dependencies>
 
 	<build>

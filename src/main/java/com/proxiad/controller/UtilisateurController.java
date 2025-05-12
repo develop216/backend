@@ -33,7 +33,7 @@ public class UtilisateurController {
 	
 	private String generateToken(Utilisateur utilisateur) {
         return Jwts.builder()
-                .setSubject(utilisateur.getEmail())
+                .setSubject(utilisateur.getUsername())
                 .claim("id", utilisateur.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) // Expires in 10 minutes
